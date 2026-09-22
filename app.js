@@ -6,6 +6,12 @@ const Bus = require("./Bus");
 const Booking = require("./Booking");
 const Payment = require("./Payment");
 
+User.hasMany(Booking);
+Booking.belongsTo(User);
+
+Bus.hasMany(Booking);
+Booking.belongsTo(Bus);
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -13,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 const init = async () => {
   try {
     await sequelize.authenticate();
-    await sequelize.sync();
+    await sequelize.sync({ alter: true });
 
     const userCount = await User.count();
     if (userCount === 0) {
